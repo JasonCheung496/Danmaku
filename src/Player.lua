@@ -5,8 +5,8 @@ local speed = 400
 ---------------------------------------------------------------------------------------------------------
 
 function Player:init()
-  self.x = 100
-  self.y = 200
+  self.x = GAME_WIDTH/2 - 100
+  self.y = GAME_HEIGHT - 200
   self.width = 50
   self.height = 100
 
@@ -32,9 +32,21 @@ function Player:update(dt)
     self.dy = -speed * dt
   end
 
-  local goalX, goalY = player.x + player.dx, player.y + player.dy
-  actualX, actualY = world:move(player, goalX, goalY)
-  player.x, player.y = actualX, actualY
+  --check collision using bump
+  local playerFilter = function(item, other)
+    if other.__index == Bullet then return "cross"
+    else return "slide"
+    end
+  end
+
+  local goalX, goalY = self.x + self.dx, self.y + self.dy
+  actualX, actualY = world:move(self, goalX, goalY, playerFilter)
+  self.x, self.y = actualX, actualY
+
+  --press c to shoot the bullet
+  if inputTable["c"] then
+    Player:shootTheBullet()
+  end
 
 end
 
@@ -42,7 +54,16 @@ end
 
 function Player:render()
   love.graphics.setColor(0.1, 0.9, 0.9, 1)
-  love.graphics.rectangle("fill", player.x, player.y, player.width, player.height)
+  love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
+end
+
+---------------------------------------------------------------------------------------------------------
+
+function Player:shootTheBullet()
+  local randomAngle = (math.random(0, 359) - 180) / 180 * math.pi
+  bullet = Bullet(800, 700, randomAngle)
+  world:add(bullet, bullet.x, bullet.y, bullet.width, bullet.height)
+
 end
 
 ---------------------------------------------------------------------------------------------------------

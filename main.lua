@@ -24,12 +24,14 @@ function love.load()
     vsync = true
   })
 
+  math.randomseed(os.time())
 
   gGameState = StateMachine {
     ['menu'] = function() return Menu() end,
     ['level1'] = function() return Level1() end
   }
   gGameState:change('level1')
+
 
   inputTable = {}
 
@@ -52,12 +54,15 @@ function love.draw()
   gGameState:render()
 
   push:finish()
+
 end
 
 ---------------------------------------------------------------------------------------------------------
 
 function love.resize(w, h)
+
   push:resize(w, h)
+
 end
 
 ---------------------------------------------------------------------------------------------------------
