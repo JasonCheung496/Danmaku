@@ -3,7 +3,8 @@ Class = require "lib/class"
 
 require 'lib/StateMachine'
 require 'src/states/BaseState'
-require 'src/states/PlayState'
+require 'src/states/Menu'
+require 'src/states/Level1'
 
 GAME_WIDTH, GAME_HEIGHT = 1600, 900
 local WINDOW_WIDTH, WINDOW_HEIGHT = love.window.getDesktopDimensions()
@@ -20,9 +21,10 @@ function love.load()
 
 
   gGameState = StateMachine {
-      ['play'] = function() return PlayState() end
+    ['menu'] = function() return Menu() end,
+    ['level1'] = function() return Level1() end
   }
-  gGameState:change('play')
+  gGameState:change('menu')
 
 end
 
