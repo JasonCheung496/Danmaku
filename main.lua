@@ -1,5 +1,10 @@
 push = require "lib/push"
+bump = require "lib/bump"
 Class = require "lib/class"
+
+require "src/Player"
+require "src/Enemy"
+require "src/Bullet"
 
 require 'lib/StateMachine'
 require 'src/states/BaseState'
@@ -10,7 +15,7 @@ GAME_WIDTH, GAME_HEIGHT = 1600, 900
 local WINDOW_WIDTH, WINDOW_HEIGHT = love.window.getDesktopDimensions()
 WINDOW_WIDTH, WINDOW_HEIGHT = WINDOW_WIDTH*0.8, WINDOW_HEIGHT*0.8
 
-
+---------------------------------------------------------------------------------------------------------
 
 function love.load()
   push:setupScreen(GAME_WIDTH, GAME_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
@@ -24,13 +29,22 @@ function love.load()
     ['menu'] = function() return Menu() end,
     ['level1'] = function() return Level1() end
   }
-  gGameState:change('menu')
+  gGameState:change('level1')
+
+  inputTable = {}
 
 end
+
+---------------------------------------------------------------------------------------------------------
 
 function love.update(dt)
   gGameState:update(dt)
+
+  inputTable = {}
+
 end
+
+---------------------------------------------------------------------------------------------------------
 
 function love.draw()
   push:start()
@@ -40,7 +54,16 @@ function love.draw()
   push:finish()
 end
 
+---------------------------------------------------------------------------------------------------------
 
 function love.resize(w, h)
   push:resize(w, h)
 end
+
+---------------------------------------------------------------------------------------------------------
+
+function love.keypressed(key, scancode, isrepeat)
+  inputTable[key] = true
+end
+
+---------------------------------------------------------------------------------------------------------
