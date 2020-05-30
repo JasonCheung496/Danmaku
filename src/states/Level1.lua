@@ -36,7 +36,7 @@ function Level1:render()
   local i = 1
   for key, item in pairs(items) do
     item:render()
-    love.graphics.print(tostring(item.__index), 0, i*100)
+    love.graphics.print(tostring(item), 0, i*100)
     i = i + 1
   end
 

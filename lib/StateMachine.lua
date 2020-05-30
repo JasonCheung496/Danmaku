@@ -45,11 +45,11 @@ function StateMachine:init(states)
 	self.current = self.empty
 end
 
-function StateMachine:change(stateName, enterParams)
+function StateMachine:change(stateName, ...)
 	assert(self.states[stateName]) -- state must exist!
 	self.current:exit()
 	self.current = self.states[stateName]()
-	self.current:enter(enterParams)
+	self.current:enter(...)
 end
 
 function StateMachine:update(dt)

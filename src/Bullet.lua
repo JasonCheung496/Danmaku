@@ -42,7 +42,7 @@ function Bullet:update(dt)
   if (self.x < -100 and self.angle <= 0) or --left side
   (self.x > GAME_WIDTH + 100 and self.angle >= 0) or -- right side
   (self.y < -100 and self.angle >= -pi/2 and self.angle <= pi/2) or --up side
-  (self.y > GAME_HEIGHT + 100 and self.angle <= -pi/2 and self.angle >= pi/2) then -- down side
+  (self.y > GAME_HEIGHT + 100 and (self.angle <= -pi/2 or self.angle >= pi/2)) then -- down side
     world:remove(self)
   end
 

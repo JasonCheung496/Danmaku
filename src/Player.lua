@@ -1,6 +1,9 @@
 Player = Class{}
 
 local speed = 400
+local shootCD = 8
+local shootCnt = shootCD
+local shootMode = 2
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -13,11 +16,14 @@ function Player:init()
   self.dx = 0
   self.dy = 0
 
+
+
 end
 
 ---------------------------------------------------------------------------------------------------------
 
 function Player:update(dt)
+  --player movement
   self.dx, self.dy = 0, 0
   if love.keyboard.isDown("right") then
     self.dx = speed * dt
@@ -40,13 +46,21 @@ function Player:update(dt)
   end
 
   local goalX, goalY = self.x + self.dx, self.y + self.dy
-  actualX, actualY = world:move(self, goalX, goalY, playerFilter)
+  local actualX, actualY = world:move(self, goalX, goalY, playerFilter)
   self.x, self.y = actualX, actualY
 
   --press c to shoot the bullet
-  if inputTable["c"] then
-    Player:shootTheBullet()
+  if love.keyboard.isDown('c') then
+    shootCnt = shootCnt - 1
   end
+  if shootCnt <= 0 then
+    self:shootTheBullet(shootMode)
+    shootCnt = shootCD
+  end
+
+
+
+
 
 end
 
@@ -59,10 +73,20 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 
-function Player:shootTheBullet()
-  local randomAngle = (math.random(0, 359) - 180) / 180 * math.pi
-  bullet = Bullet(800, 700, randomAngle)
-  world:add(bullet, bullet.x, bullet.y, bullet.width, bullet.height)
+function Player:shootTheBullet(mode)
+  if mode == 1 then
+    local randomAngle = (math.random(150, 209) - 180) / 180 * math.pi
+    bullet = Bullet(self.x + self.width/2, self.y, randomAngle)
+    world:add(bullet, bullet.x, bullet.y, bullet.width, bullet.height)
+
+  elseif mode == 2 then
+    for i = -1, 1 do
+      bullet = Bullet(self.x + self.width/2, self.y, i*math.pi/7)
+      world:add(bullet, bullet.x, bullet.y, bullet.width, bullet.height)
+    end
+
+
+  end
 
 end
 
