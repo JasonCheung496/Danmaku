@@ -6,7 +6,7 @@ local image = love.graphics.newImage("Sprite/bullet.png")
 
 ---------------------------------------------------------------------------------------------------------
 --!!x, y, from are necessary. others are optional
-function Bullet:init(x, y, from, theta, speed, damage)
+function Bullet:init(x, y, from, theta, specialMove, speed, damage)
   self.x = x
   self.y = y
   self.width = image:getWidth()
@@ -24,6 +24,8 @@ function Bullet:init(x, y, from, theta, speed, damage)
 
   self.damage = damage or defaultDamage
 
+  self.specialMove = specialMove and function() specialMove(self) end or function() end
+
   world:add(self, self.x, self.y, self.width, self.height)
 
 end
@@ -31,6 +33,8 @@ end
 ---------------------------------------------------------------------------------------------------------
 
 function Bullet:update(dt)
+  --special move
+  self.specialMove()
 
   -- speed >= 0
   --if speed is -ve, flip the direction

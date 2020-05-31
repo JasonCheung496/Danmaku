@@ -33,7 +33,7 @@ function love.load()
     ["level1"] = function() return Level1() end,
     ["lose"] = function() return Lose() end,
   }
-  gGameState:change("lose")
+  gGameState:change("menu")
 
 
   inputTable = {}
