@@ -60,6 +60,7 @@ function Bullet:update(dt)
       if cols[i].other.__index == Enemy or cols[i].other.__index == Player then
         world:remove(self)
         cols[i].other:hitByBullet(-10)
+        break
       end
     end
   end

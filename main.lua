@@ -11,6 +11,7 @@ require 'lib/StateMachine'
 require 'src/states/BaseState'
 require 'src/states/Menu'
 require 'src/states/Level1'
+require 'src/states/Lose'
 
 GAME_WIDTH, GAME_HEIGHT = 1600, 900
 local WINDOW_WIDTH, WINDOW_HEIGHT = love.window.getDesktopDimensions()
@@ -28,10 +29,11 @@ function love.load()
   math.randomseed(os.time())
 
   gGameState = StateMachine {
-    ['menu'] = function() return Menu() end,
-    ['level1'] = function() return Level1() end
+    ["menu"] = function() return Menu() end,
+    ["level1"] = function() return Level1() end,
+    ["lose"] = function() return Lose() end,
   }
-  gGameState:change('level1')
+  gGameState:change("lose")
 
 
   inputTable = {}

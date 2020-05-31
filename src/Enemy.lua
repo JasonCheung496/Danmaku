@@ -73,6 +73,11 @@ function Enemy:update(dt)
   local actualX, actualY = world:move(self, goalX, goalY, enemyFilter)
   self.x, self.y = actualX, actualY
 
+  --destroy itself if HP <= 0
+  if self.HP <= 0 then
+    world:remove(self)
+  end
+
 end
 
 ---------------------------------------------------------------------------------------------------------

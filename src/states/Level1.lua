@@ -37,6 +37,8 @@ function Level1:update(dt)
 
   if inputTable["r"] then
     gGameState:change("level1")
+  elseif player.HP <= 0 then
+    gGameState:change("lose")
   end
 
 end
