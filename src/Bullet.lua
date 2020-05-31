@@ -1,42 +1,68 @@
 Bullet = Class{}
 
-local speed = 400
+local defaultSpeed = 400
+local defaultDamage = -10
 local image = love.graphics.newImage("Sprite/bullet.png")
 
 ---------------------------------------------------------------------------------------------------------
-
-function Bullet:init(x, y, theta)
+--!!x, y, from are necessary. others are optional
+function Bullet:init(x, y, from, theta, speed, damage)
   self.x = x
   self.y = y
   self.width = image:getWidth()
   self.height = image:getHeight()
 
   -- -pi <= angle < pi
-  --angle = 0: face upward
+  -- angle = 0: face upward
   -- -pi <= angle < 0: face left
   -- 0 < angle < pi: face right
   local pi = math.pi
-  self.angle = (theta + pi) % (pi*2) - pi
+  self.angle = theta and (theta + pi) % (pi*2) - pi or 0
+  self.speed = speed or defaultSpeed
+
+  self.source = from
+
+  self.damage = damage or defaultDamage
+
+  world:add(self, self.x, self.y, self.width, self.height)
 
 end
 
 ---------------------------------------------------------------------------------------------------------
 
 function Bullet:update(dt)
-  -- -pi <= angle < pi
+
+  -- speed >= 0
+  --if speed is -ve, flip the direction
   local pi = math.pi
+  if self.speed < 0 then
+    self.speed = -self.speed
+    self.angle = self.angle + math.pi
+  end
+
+  -- -pi <= angle < pi
   self.angle = (self.angle + pi) % (pi*2) - pi
 
   --move in its direction
-  local goalX = self.x + speed * math.sin(self.angle) * dt
-  local goalY = self.y - speed * math.cos(self.angle) * dt
+  local goalX = self.x + self.speed * math.sin(self.angle) * dt
+  local goalY = self.y - self.speed * math.cos(self.angle) * dt
 
   --check collision using bump
   local bulletFilter = function(item, other)
     return "cross"
   end
-  actualX, actualY = world:move(self, goalX, goalY, bulletFilter)
+  actualX, actualY, cols, len = world:move(self, goalX, goalY, bulletFilter)
   self.x, self.y = actualX, actualY
+
+  --if hit player/enemy
+  for i = 1, len do
+    if cols[i].other.__index ~= self.source.__index then
+      if cols[i].other.__index == Enemy or cols[i].other.__index == Player then
+        world:remove(self)
+        cols[i].other:hitByBullet(-10)
+      end
+    end
+  end
 
   --auto destroy itself if out of screen
   if (self.x < -100 and self.angle <= 0) or --left side

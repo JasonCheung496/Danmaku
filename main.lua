@@ -5,6 +5,7 @@ Class = require "lib/class"
 require "src/Player"
 require "src/Enemy"
 require "src/Bullet"
+require "src/Border"
 
 require 'lib/StateMachine'
 require 'src/states/BaseState'
