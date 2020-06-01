@@ -13,6 +13,7 @@ require 'lib/StateMachine'
 require 'src/states/BaseState'
 require 'src/states/Menu'
 require 'src/states/Level1'
+require 'src/states/Level2'
 require 'src/states/Lose'
 
 GAME_WIDTH, GAME_HEIGHT = 1600, 900
@@ -33,6 +34,7 @@ function love.load()
   gGameState = StateMachine {
     ["menu"] = function() return Menu() end,
     ["level1"] = function() return Level1() end,
+    ["level2"] = function() return Level2() end,
     ["lose"] = function() return Lose() end,
   }
   gGameState:change("menu")

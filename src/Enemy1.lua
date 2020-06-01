@@ -50,6 +50,7 @@ function Enemy1:update(dt)
   --destroy itself if HP <= 0
   if self.HP <= 0 then
     world:remove(self)
+    gameScore = gameScore + self.score
   end
 
 end

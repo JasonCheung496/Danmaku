@@ -50,6 +50,7 @@ function Enemy2:update(dt)
   --destroy itself if HP <= 0
   if self.HP <= 0 then
     world:remove(self)
+    gameScore = gameScore + self.score
   end
 
 end
@@ -81,7 +82,7 @@ function Enemy2:shootTheBullet()
       type = 2,
       specialMove = move,
       angle = pi*2/(a*2+1)*i,--i*pi/8 + pi,
-      speed = 300
+      speed = 600
     }
 
     bullet = Bullet(newBulletAttri)

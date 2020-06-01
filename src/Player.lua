@@ -99,10 +99,10 @@ function Player:update(dt)
 
 
   if love.keyboard.isDown("s") then
-    self.HP = self.HP - 10*dt
+    self.HP = self.HP - 40*dt
   end
   if love.keyboard.isDown("d") then
-    self.HP = self.HP + 10*dt
+    self.HP = self.HP + 40*dt
   end
 
 

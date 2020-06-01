@@ -13,6 +13,8 @@ function EnemyBase:initBase(attri)
 
   self.HP = attri.HP or 100
 
+  self.score = attri.score or 200
+
   world:add(self, self.x, self.y, self.width, self.height)
 
 end
@@ -35,7 +37,7 @@ end
 ---------------------------------------------------------------------------------------------------------
 
 function EnemyBase:renderBase()
-  
+
 
 end
 
