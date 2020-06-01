@@ -101,18 +101,14 @@ function Bullet:update(dt)
   self.visible.x = self.x + self.width/2 - r*math.cos(theta + self.visible.angle)
   self.visible.y = self.y + self.height/2 - r*math.sin(theta + self.visible.angle)
 
-
-
 end
 
 ---------------------------------------------------------------------------------------------------------
 
 function Bullet:render()
   love.graphics.setColor(1, 1, 1, 1)
-
   love.graphics.draw(self.image, self.visible.x, self.visible.y, self.visible.angle)
   --love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
-
 
 end
 

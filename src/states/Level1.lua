@@ -5,7 +5,7 @@ Level1 = Class{__includes = BaseState}
 function Level1:enter()
   world = bump.newWorld()
 
-  local newPlayerAttri = { x = GAME_WIDTH/2 - 100, y = GAME_HEIGHT - 200, mode = 3 }
+  local newPlayerAttri = { x = GAME_WIDTH/2 - 100, y = GAME_HEIGHT - 200, type = 3 }
   player = Player(newPlayerAttri)
 
   local newEnemyAttri = { x = GAME_WIDTH/2 - 100, y = 200, HP = 1000 }

@@ -36,15 +36,10 @@ function BorderRect:init(x, y, width, height)
 end
 
 ---------------------------------------------------------------------------------------------------------
-
-function BorderRect:update(dt)
-
-end
-
+function BorderRect:update(dt) end
 ---------------------------------------------------------------------------------------------------------
 
 function BorderRect:render()
-
   love.graphics.setColor(0.3, 0.2, 0.4, 1)
   love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 
