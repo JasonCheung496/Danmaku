@@ -2,15 +2,15 @@ Player = Class{}
 
 local speed = 400
 local maxHP = 100
-local totalShootMode = 2
+local totalShootMode = 3
 local invincibleTime = 1
-local shootCD = { 4 , 12 }
+local shootCD = { 4 , 12 , 3}
 
 ---------------------------------------------------------------------------------------------------------
 
-function Player:init(x, y, mode)
-  self.x = x
-  self.y = y
+function Player:init(attri)
+  self.x = attri.x
+  self.y = attri.y
   self.width = 10
   self.height = 10
 
@@ -21,13 +21,14 @@ function Player:init(x, y, mode)
   self.visible.x = self.x + self.width/2 - self.visible.width/2
   self.visible.y = self.y + self.height/2 - self.visible.height/2
 
+  self.speed = attri.speed or speed
   self.dx = 0
   self.dy = 0
 
-  self.shootMode = mode or 1
+  self.shootMode = attri.mode or 1
   self.shootTimer = 1
 
-  self.HP = maxHP
+  self.HP = attri.maxHP or maxHP
 
   self.invincibleTimer = 0
 
@@ -62,16 +63,16 @@ function Player:update(dt)
   --input player movement
   self.dx, self.dy = 0, 0
   if love.keyboard.isDown("right") then
-    self.dx = speed * dt
+    self.dx = self.speed * dt
   end
   if love.keyboard.isDown("left") then
-    self.dx = -speed * dt
+    self.dx = -self.speed * dt
   end
   if love.keyboard.isDown("down") then
-    self.dy = speed * dt
+    self.dy = self.speed * dt
   end
   if love.keyboard.isDown("up") then
-    self.dy = -speed * dt
+    self.dy = -self.speed * dt
   end
 
   --move the player & check collision using bump
@@ -125,14 +126,51 @@ function Player:shootTheBullet(mode)
   if mode == 1 then
     local randomAngle = (math.random(170, 189) - 180) / 180 * math.pi
     local move = function(bullet)
-      bullet.speed = bullet.speed + 15
+      bullet.speed = bullet.speed + 10
     end
-    bullet = Bullet(self.x + self.width/2, self.y, self, 1, move, randomAngle, 200)
+    local newBulletAttri = {
+      x = self.x + self.width/2,
+      y = self.y,
+      source = self,
+      type = 1,
+      specialMove = move,
+      angle = randomAngle,
+      speed = 200
+    }
+
+    bullet = Bullet(newBulletAttri)
 
   elseif mode == 2 then
     for i = -1, 1 do
-      bullet = Bullet(self.x + self.width/2, self.y, self, 1, nil, i*math.pi/7)
+      local newBulletAttri = {
+        x = self.x + self.width/2,
+        y = self.y,
+        source = self,
+        type = 1,
+        angle = i*math.pi/7
+      }
+
+      bullet = Bullet(newBulletAttri)
     end
+
+  elseif mode == 3 then
+    local randomAngle = (math.random(170, 189) - 180) / 180 * math.pi
+    local move = function(bullet)
+      bullet.register[1] = bullet.register[1] and bullet.register[1] + 1 or -20
+      bullet.speed = bullet.speed + bullet.register[1]
+    end
+    local newBulletAttri = {
+      x = self.x + self.width/2,
+      y = self.y,
+      source = self,
+      type = 1,
+      specialMove = move,
+      angle = randomAngle,
+      speed = 300
+    }
+
+    bullet = Bullet(newBulletAttri)
+
   end
 
 end

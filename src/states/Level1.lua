@@ -5,17 +5,22 @@ Level1 = Class{__includes = BaseState}
 function Level1:enter()
   world = bump.newWorld()
 
-  player = Player(GAME_WIDTH/2 - 100, GAME_HEIGHT - 200, 1)
-  enemy1 = Enemy(GAME_WIDTH/2 - 100, 200)
-  --enemy2 = Enemy(GAME_WIDTH/2 + 100, 200)
+  local newPlayerAttri = { x = GAME_WIDTH/2 - 100, y = GAME_HEIGHT - 200, mode = 3 }
+  player = Player(newPlayerAttri)
+
+  local newEnemyAttri = { x = GAME_WIDTH/2 - 100, y = 200, HP = 1000 }
+  enemy1 = Enemy1(newEnemyAttri)
+  local newEnemyAttri = { x = GAME_WIDTH/2 + 100, y = 200, HP = 1000 }
+  enemy2 = Enemy2(newEnemyAttri)
+
   curRoom = Border(300, 50, 1000, 800)
 
   items = world:getItems()
 
   --HUD init
   HUD = {
-    playerHP = {x = 100, y = 10, width = 50, height = 300, barY = 10, barHeight = 300},
-    enemyHP = {x = 180, y = 10, width = 50, height = 300, barY = 10, barHeight = 300}
+    playerHP = {x = 100, y = 10, width = 50, height = 300, barY = 10, barHeight = 300, max = player.HP},
+    enemyHP = {x = 180, y = 10, width = 50, height = 300, barY = 10, barHeight = 300, max = enemy1.HP}
   }
 
 end
@@ -30,9 +35,9 @@ function Level1:update(dt)
   end
 
   --HUD update
-  HUD.playerHP.barHeight = HUD.playerHP.height*player.HP/100
+  HUD.playerHP.barHeight = HUD.playerHP.height*player.HP/HUD.playerHP.max
   HUD.playerHP.barY = HUD.playerHP.y + HUD.playerHP.height - HUD.playerHP.barHeight
-  HUD.enemyHP.barHeight = HUD.enemyHP.height*enemy1.HP/100
+  HUD.enemyHP.barHeight = HUD.enemyHP.height*enemy1.HP/HUD.enemyHP.max
   HUD.enemyHP.barY = HUD.enemyHP.y + HUD.enemyHP.height - HUD.enemyHP.barHeight
 
   if inputTable["r"] then
@@ -57,7 +62,7 @@ function Level1:render()
     i = i + 1
   end
 
-  --HUD
+  --HUD display
   love.graphics.setColor(0.8, 0.7, 0.5, 0.7)
   love.graphics.rectangle("fill", HUD.playerHP.x, HUD.playerHP.barY, HUD.playerHP.width, HUD.playerHP.barHeight)
   love.graphics.setColor(0.8, 0.9, 0.7, 1)

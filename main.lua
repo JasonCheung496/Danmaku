@@ -3,7 +3,9 @@ bump = require "lib/bump"
 Class = require "lib/class"
 
 require "src/Player"
-require "src/Enemy"
+require "src/EnemyBase"
+require "src/Enemy1"
+require "src/Enemy2"
 require "src/Bullet"
 require "src/Border"
 
