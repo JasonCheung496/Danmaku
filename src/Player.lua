@@ -123,15 +123,15 @@ end
 
 function Player:shootTheBullet(mode)
   if mode == 1 then
-    local randomAngle = (math.random(150, 209) - 180) / 180 * math.pi
+    local randomAngle = (math.random(170, 189) - 180) / 180 * math.pi
     local move = function(bullet)
       bullet.speed = bullet.speed + 15
     end
-    bullet = Bullet(self.x + self.width/2, self.y, self, randomAngle, move, 100)
+    bullet = Bullet(self.x + self.width/2, self.y, self, 1, move, randomAngle, 200)
 
   elseif mode == 2 then
     for i = -1, 1 do
-      bullet = Bullet(self.x + self.width/2, self.y, self, i*math.pi/7)
+      bullet = Bullet(self.x + self.width/2, self.y, self, 1, nil, i*math.pi/7)
     end
   end
 

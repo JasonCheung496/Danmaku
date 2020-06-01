@@ -93,11 +93,12 @@ end
 function Enemy:shootTheBullet()
   local pi = math.pi
 
+  local randFact = math.random(-5, 5)/1000
   for i = -2, 2 do
     local move = function(bullet)
-      bullet.angle = bullet.angle + 0.01*i
+      bullet.angle = bullet.angle + randFact + 0.01*i
     end
-    bullet = Bullet(self.x + self.width/2, self.y+self.height, self, i*pi/8 + pi, move, 200)
+    bullet = Bullet(self.x + self.width/2, self.y+self.height, self, 2, move, i*pi/8 + pi, 200)
   end
 
 end

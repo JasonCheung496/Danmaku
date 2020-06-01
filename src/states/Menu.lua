@@ -20,8 +20,6 @@ function Menu:enter()
 
   }
 
-
-
 end
 
 ---------------------------------------------------------------------------------------------------------
@@ -67,7 +65,6 @@ function Menu:render()
 
   love.graphics.setColor(0.9, 0.8, 0.9, 1)
   love.graphics.polygon("fill", UI.selector)
-
 
 
 end

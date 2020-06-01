@@ -7,7 +7,7 @@ function Level1:enter()
 
   player = Player(GAME_WIDTH/2 - 100, GAME_HEIGHT - 200, 1)
   enemy1 = Enemy(GAME_WIDTH/2 - 100, 200)
-  enemy2 = Enemy(GAME_WIDTH/2 + 100, 200)
+  --enemy2 = Enemy(GAME_WIDTH/2 + 100, 200)
   curRoom = Border(300, 50, 1000, 800)
 
   items = world:getItems()
