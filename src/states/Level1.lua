@@ -40,7 +40,7 @@ function Level1:update(dt)
   enemiesNumber = 0
   for key, item in pairs(items) do
     item:update(dt)
-    if item.__index and (item.__index == Enemy1 or item.__index == Enemy2) then
+    if item.__group and item.__group == "enemy" then
       enemiesNumber = enemiesNumber + 1
     end
   end

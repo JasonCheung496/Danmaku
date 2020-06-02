@@ -1,6 +1,6 @@
 Menu = Class{__includes = BaseState}
 
-local lFont = love.graphics.newFont(60)
+local lFont = love.graphics.newFont(100)
 local sFont = love.graphics.newFont(40)
 
 ---------------------------------------------------------------------------------------------------------
@@ -10,14 +10,12 @@ function Menu:enter()
 
   --positions of UI texts
   UI = {
-    title = {GAME_WIDTH/2-100, GAME_HEIGHT/2-100},
+    title = {GAME_WIDTH/2-250, GAME_HEIGHT/2-200},
     line1 = {GAME_WIDTH/2-200, GAME_HEIGHT/2+100},
     line2 = {GAME_WIDTH/2-200, GAME_HEIGHT/2+200},
     selector = {GAME_WIDTH/2-250, GAME_HEIGHT/2+100,
       GAME_WIDTH/2-250, GAME_HEIGHT/2+140,
       GAME_WIDTH/2-220, GAME_HEIGHT/2+120},
-
-
   }
 
 end
@@ -39,7 +37,7 @@ function Menu:update(dt)
   --select what menuSelector's value is
   if inputTable["c"] then
     if menuSelector == 0 then
-      gGameState:change("level1")
+      gGameState:change("select")
     elseif menuSelector == 1 then
       love.event.quit()
     else
@@ -65,7 +63,6 @@ function Menu:render()
 
   love.graphics.setColor(0.9, 0.8, 0.9, 1)
   love.graphics.polygon("fill", UI.selector)
-
 
 end
 

@@ -61,7 +61,8 @@ playerSet = {
         type = 1,
         specialMove = move,
         angle = randomAngle,
-        speed = 300
+        speed = 300,
+        damage = -15
       }
       bullet = Bullet(newBulletAttri)
     end
@@ -94,7 +95,6 @@ function Player:init(newAttri)
   self.speed = attri.speed or speed
   self.dx = 0
   self.dy = 0
-
 
   self.shootTimer = 1
 

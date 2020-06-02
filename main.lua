@@ -3,6 +3,7 @@ bump = require "lib/bump"
 Class = require "lib/class"
 
 require "src/Player"
+require "src/PlayerDemo"
 require "src/EnemyBase"
 require "src/Enemy1"
 require "src/Enemy2"
@@ -14,10 +15,12 @@ require "src/Border"
 require 'lib/StateMachine'
 require 'src/states/BaseState'
 require 'src/states/Menu'
+require 'src/states/Select'
 require 'src/states/Level1'
 require 'src/states/Level2'
 require 'src/states/Level3'
 require 'src/states/Lose'
+require 'src/states/Win'
 
 GAME_WIDTH, GAME_HEIGHT = 1600, 900
 local WINDOW_WIDTH, WINDOW_HEIGHT = love.window.getDesktopDimensions()
@@ -36,10 +39,12 @@ function love.load()
 
   gGameState = StateMachine {
     ["menu"] = function() return Menu() end,
+    ["select"] = function() return Select() end,
     ["level1"] = function() return Level1() end,
     ["level2"] = function() return Level2() end,
     ["level3"] = function() return Level3() end,
     ["lose"] = function() return Lose() end,
+    ["win"] = function() return Win() end,
   }
   gGameState:change("menu")
 

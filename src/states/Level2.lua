@@ -36,8 +36,12 @@ function Level2:update(dt)
   items = world:getItems()
 
   -- update all items
+  enemiesNumber = 0
   for key, item in pairs(items) do
     item:update(dt)
+    if item.__group and item.__group == "enemy" then
+      enemiesNumber = enemiesNumber + 1
+    end
   end
 
   -- HUD update
@@ -51,6 +55,8 @@ function Level2:update(dt)
     gGameState:change("lose", gameScore)
   elseif inputTable["o"] then
     gGameState:change("level1")
+  elseif enemiesNumber == 0 and inputTable["c"] then
+    gGameState:change("level3", {HP = player.HP, type = player.type})
   elseif inputTable["p"] then
     gGameState:change("level3", {HP = player.HP, type = player.type})
   end

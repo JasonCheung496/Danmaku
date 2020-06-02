@@ -1,4 +1,5 @@
 Enemy2 = Class{__includes = EnemyBase}
+Enemy2.__group = "enemy"
 
 local shootCD = 30
 
