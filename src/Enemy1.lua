@@ -19,6 +19,10 @@ end
 function Enemy1:update(dt)
   self:updateBase(dt)
 
+  -- 0 <= push <= 1
+  self.push = math.min(1, self.push)
+  self.push = math.max(0, self.push-dt/2)
+
   --move randomly
   if self.push == 0 and math.random(1, 100) == 1 then
     self.push = math.random(70, 100)/100

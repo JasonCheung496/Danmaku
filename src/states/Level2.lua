@@ -3,13 +3,16 @@ Level2 = Class{__includes = BaseState}
 ---------------------------------------------------------------------------------------------------------
 
 function Level2:enter(playerAttri)
+  -- new world
   world = bump.newWorld()
   gameScore = gameScore or 0
 
+  -- new player
   local newPlayerAttri = playerAttri or {}
   newPlayerAttri.x, newPlayerAttri.y = GAME_WIDTH/2 - 100, GAME_HEIGHT - 200
   player = Player(newPlayerAttri)
 
+  -- 2 new enemies of type 2
   local newEnemyAttri = { x = GAME_WIDTH/2 - 400, y = 100, HP = 1000 }
   enemy1 = Enemy2(newEnemyAttri)
   local newEnemyAttri = { x = GAME_WIDTH/2 + 200, y = 200, HP = 1000 }
@@ -32,11 +35,12 @@ end
 function Level2:update(dt)
   items = world:getItems()
 
+  -- update all items
   for key, item in pairs(items) do
     item:update(dt)
   end
 
-  --HUD update
+  -- HUD update
   HUD.playerHP.barHeight = HUD.playerHP.height*player.HP/HUD.playerHP.max
   HUD.playerHP.barY = HUD.playerHP.y + HUD.playerHP.height - HUD.playerHP.barHeight
   HUD.score.val = gameScore
@@ -47,6 +51,8 @@ function Level2:update(dt)
     gGameState:change("lose", gameScore)
   elseif inputTable["o"] then
     gGameState:change("level1")
+  elseif inputTable["p"] then
+    gGameState:change("level3", {HP = player.HP, type = player.type})
   end
 
 
@@ -59,11 +65,12 @@ function Level2:render()
   love.graphics.setFont(love.graphics.newFont(40))
   --love.graphics.print("This is level2")
 
+  -- render all items
   for key, item in pairs(items) do
     item:render()
   end
 
-  --HUD display
+  -- HUD display
   love.graphics.setColor(0.8, 0.7, 0.5, 0.7)
   love.graphics.rectangle("fill", HUD.playerHP.x, HUD.playerHP.barY, HUD.playerHP.width, HUD.playerHP.barHeight)
   love.graphics.setColor(0.8, 0.9, 0.7, 1)

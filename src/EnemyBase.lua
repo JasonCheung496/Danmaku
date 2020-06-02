@@ -25,10 +25,6 @@ function EnemyBase:updateBase(dt)
   -- 0 <= HP
   self.HP = math.max(0, self.HP)
 
-  -- 0 <= push <= 1
-  self.push = math.min(1, self.push)
-  self.push = math.max(0, self.push-dt/2)
-
   -- 0 <= angle < 2pi
   self.angle = self.angle % (math.pi*2)
 

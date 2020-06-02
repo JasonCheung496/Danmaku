@@ -1,8 +1,9 @@
 Player = Class{}
 
---define how the player shoots and the shootCD
+--define the attributes of each type of player
 playerSet = {
   {
+    image = love.graphics.newImage("Sprite/battleship.png"),
     maxHP = 30,
     CD = 4,
     shoot = function (player)
@@ -10,6 +11,7 @@ playerSet = {
       local move = function(bullet)
         bullet.speed = bullet.speed + 10
       end
+
       local newBulletAttri = {
         x = player.x + player.width/2,
         y = player.y,
@@ -19,12 +21,12 @@ playerSet = {
         angle = randomAngle,
         speed = 200
       }
-
       bullet = Bullet(newBulletAttri)
     end
   },
 
   {
+    image = love.graphics.newImage("Sprite/battleship.png"),
     maxHP = 30,
     CD = 12,
     shoot = function (player)
@@ -36,13 +38,13 @@ playerSet = {
           type = 1,
           angle = i*math.pi/7
         }
-
         bullet = Bullet(newBulletAttri)
       end
     end
   },
 
   {
+    image = love.graphics.newImage("Sprite/battleship.png"),
     maxHP = 30,
     CD = 3,
     shoot = function (player)
@@ -51,6 +53,7 @@ playerSet = {
         bullet.register[1] = bullet.register[1] and bullet.register[1] + 1 or -20
         bullet.speed = bullet.speed + bullet.register[1]
       end
+
       local newBulletAttri = {
         x = player.x + player.width/2,
         y = player.y,
@@ -60,9 +63,7 @@ playerSet = {
         angle = randomAngle,
         speed = 300
       }
-
       bullet = Bullet(newBulletAttri)
-
     end
   }
 }
@@ -80,10 +81,12 @@ function Player:init(newAttri)
   self.y = attri.y  or GAME_HEIGHT/2
   self.width = 10
   self.height = 10
+  self.type = attri.type or 1
 
+  self.image = playerSet[self.type].image
   self.visible = {
-    width = 50,
-    height = 100
+    width = self.image:getWidth(),
+    height = self.image:getHeight()
   }
   self.visible.x = self.x + self.width/2 - self.visible.width/2
   self.visible.y = self.y + self.height/2 - self.visible.height/2
@@ -92,7 +95,7 @@ function Player:init(newAttri)
   self.dx = 0
   self.dy = 0
 
-  self.type = attri.type or 1
+
   self.shootTimer = 1
 
   self.HP = attri.HP or playerSet[self.type].maxHP
@@ -179,8 +182,8 @@ end
 ---------------------------------------------------------------------------------------------------------
 
 function Player:render()
-  love.graphics.setColor(0.1, 0.7, 0.7, 0.7)
-  love.graphics.rectangle("fill", self.visible.x, self.visible.y, self.visible.width, self.visible.height)
+  love.graphics.setColor(1, 1, 1, 1)
+  love.graphics.draw(self.image, self.visible.x, self.visible.y)
   love.graphics.setColor(0.1, 0.9, 0.9, 1)
   love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 
