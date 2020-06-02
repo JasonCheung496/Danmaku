@@ -16,32 +16,32 @@ local bulletSet = {
 
 ---------------------------------------------------------------------------------------------------------
 --!!x, y, source are necessary. others are optional
-function Bullet:init(attri)
+function Bullet:init(newAttri)
+  local attri = newAttri or {}
+
   self.x = attri.x
   self.y = attri.y
   self.source = attri.source
 
-  self.type = attri.type
+  self.type = attri.type or 1
   self.image = bulletSet[self.type].image
   self.width = bulletSet[self.type].width
   self.height = bulletSet[self.type].height
 
   self.specialMove = attri.specialMove and function() attri.specialMove(self) end or function() end
+  self.register = {} --for special move
 
   -- -pi <= angle < pi
   -- angle = 0: face upward
   -- -pi <= angle < 0: face left
   -- 0 < angle < pi: face right
-  self.angle = attri.angle
+  self.angle = attri.angle or 0
   self.speed = attri.speed or defaultSpeed
 
   self.damage = attri.damage or defaultDamage
   self.lifetime = 2000
 
   self.visible = { x = self.x, y = self.y, angle = self.angle }
-
-  --for special move
-  self.register = {}
 
   world:add(self, self.x, self.y, self.width, self.height)
 

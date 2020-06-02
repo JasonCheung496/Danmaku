@@ -4,7 +4,9 @@ local shootCD = 30
 
 ---------------------------------------------------------------------------------------------------------
 
-function Enemy1:init(attri)
+function Enemy1:init(newAttri)
+  local attri = newAttri or {}
+
   self:initBase(attri)
   self.push = 0 --control random movement
 
@@ -47,10 +49,12 @@ function Enemy1:update(dt)
   local actualX, actualY = world:move(self, goalX, goalY, enemyFilter)
   self.x, self.y = actualX, actualY
 
-  --destroy itself if HP <= 0
+  --destroy itself if HP <= 0, gameScore+ if exists
   if self.HP <= 0 then
     world:remove(self)
-    gameScore = gameScore + self.score
+    if gameScore ~= nil then
+      gameScore = gameScore + self.score
+    end
   end
 
 end
@@ -74,6 +78,7 @@ function Enemy1:shootTheBullet()
       bullet.angle = bullet.angle + randFact + 0.01*i
       bullet.speed = bullet.speed - 10
     end
+
     local newBulletAttri = {
       x = self.x + self.width/2,
       y = self.y + self.height,
@@ -83,7 +88,6 @@ function Enemy1:shootTheBullet()
       angle = i*pi/8 + pi,
       speed = 300
     }
-
     bullet = Bullet(newBulletAttri)
   end
 

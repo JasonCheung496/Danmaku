@@ -1,15 +1,83 @@
 Player = Class{}
 
+--define how the player shoots and the shootCD
+playerSet = {
+  {
+    maxHP = 30,
+    CD = 4,
+    shoot = function (player)
+      local randomAngle = (math.random(170, 189) - 180) / 180 * math.pi
+      local move = function(bullet)
+        bullet.speed = bullet.speed + 10
+      end
+      local newBulletAttri = {
+        x = player.x + player.width/2,
+        y = player.y,
+        source = player,
+        type = 1,
+        specialMove = move,
+        angle = randomAngle,
+        speed = 200
+      }
+
+      bullet = Bullet(newBulletAttri)
+    end
+  },
+
+  {
+    maxHP = 30,
+    CD = 12,
+    shoot = function (player)
+      for i = -1, 1 do
+        local newBulletAttri = {
+          x = player.x + player.width/2,
+          y = player.y,
+          source = player,
+          type = 1,
+          angle = i*math.pi/7
+        }
+
+        bullet = Bullet(newBulletAttri)
+      end
+    end
+  },
+
+  {
+    maxHP = 30,
+    CD = 3,
+    shoot = function (player)
+      local randomAngle = (math.random(170, 189) - 180) / 180 * math.pi
+      local move = function(bullet)
+        bullet.register[1] = bullet.register[1] and bullet.register[1] + 1 or -20
+        bullet.speed = bullet.speed + bullet.register[1]
+      end
+      local newBulletAttri = {
+        x = player.x + player.width/2,
+        y = player.y,
+        source = player,
+        type = 1,
+        specialMove = move,
+        angle = randomAngle,
+        speed = 300
+      }
+
+      bullet = Bullet(newBulletAttri)
+
+    end
+  }
+}
+
 local speed = 400
-local maxHP = 100
 local invincibleTime = 1
-local totalType = 3
+local totalType = #playerSet
 
 ---------------------------------------------------------------------------------------------------------
 
-function Player:init(attri)
-  self.x = attri.x
-  self.y = attri.y
+function Player:init(newAttri)
+  local attri = newAttri or {}
+
+  self.x = attri.x or GAME_WIDTH/2
+  self.y = attri.y  or GAME_HEIGHT/2
   self.width = 10
   self.height = 10
 
@@ -27,7 +95,7 @@ function Player:init(attri)
   self.type = attri.type or 1
   self.shootTimer = 1
 
-  self.HP = attri.maxHP or maxHP
+  self.HP = attri.HP or playerSet[self.type].maxHP
 
   self.invincibleTimer = 0
 
@@ -38,13 +106,12 @@ end
 ---------------------------------------------------------------------------------------------------------
 
 function Player:update(dt)
-
-  -- 0 <= HP <= maxHP
-  self.HP = math.min(maxHP, self.HP)
-  self.HP = math.max(0, self.HP)
-
   -- 1 <= type <= totalType
   self.type = (self.type-1) % totalType + 1
+
+  -- 0 <= HP <= maxHP
+  self.HP = math.min(playerSet[self.type].maxHP, self.HP)
+  self.HP = math.max(0, self.HP)
 
   -- 0 <= invincibleTimer
   self.invincibleTimer = math.max(0, self.invincibleTimer - dt)
@@ -120,69 +187,7 @@ function Player:render()
 end
 
 ---------------------------------------------------------------------------------------------------------
---define how the player shoots and the shootCD
-playerSet = {
-  {
-    CD = 4,
-    shoot = function (player)
-      local randomAngle = (math.random(170, 189) - 180) / 180 * math.pi
-      local move = function(bullet)
-        bullet.speed = bullet.speed + 10
-      end
-      local newBulletAttri = {
-        x = player.x + player.width/2,
-        y = player.y,
-        source = player,
-        type = 1,
-        specialMove = move,
-        angle = randomAngle,
-        speed = 200
-      }
 
-      bullet = Bullet(newBulletAttri)
-    end
-  },
-
-  {
-    CD = 12,
-    shoot = function (player)
-      for i = -1, 1 do
-        local newBulletAttri = {
-          x = player.x + player.width/2,
-          y = player.y,
-          source = player,
-          type = 1,
-          angle = i*math.pi/7
-        }
-
-        bullet = Bullet(newBulletAttri)
-      end
-    end
-  },
-
-  {
-    CD = 3,
-    shoot = function (player)
-      local randomAngle = (math.random(170, 189) - 180) / 180 * math.pi
-      local move = function(bullet)
-        bullet.register[1] = bullet.register[1] and bullet.register[1] + 1 or -20
-        bullet.speed = bullet.speed + bullet.register[1]
-      end
-      local newBulletAttri = {
-        x = player.x + player.width/2,
-        y = player.y,
-        source = player,
-        type = 1,
-        specialMove = move,
-        angle = randomAngle,
-        speed = 300
-      }
-
-      bullet = Bullet(newBulletAttri)
-
-    end
-  }
-}
 
 ---------------------------------------------------------------------------------------------------------
 

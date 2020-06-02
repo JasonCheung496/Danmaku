@@ -4,7 +4,9 @@ local shootCD = 30
 
 ---------------------------------------------------------------------------------------------------------
 
-function Enemy2:init(attri)
+function Enemy2:init(newAttri)
+  local attri = newAttri or {}
+
   self:initBase(attri)
   self.push = 0 --control random movement
 
@@ -47,10 +49,12 @@ function Enemy2:update(dt)
   local actualX, actualY = world:move(self, goalX, goalY, enemyFilter)
   self.x, self.y = actualX, actualY
 
-  --destroy itself if HP <= 0
+  --destroy itself if HP <= 0, gameScore+ if exists
   if self.HP <= 0 then
     world:remove(self)
-    gameScore = gameScore + self.score
+    if gameScore ~= nil then
+      gameScore = gameScore + self.score
+    end
   end
 
 end

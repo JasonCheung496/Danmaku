@@ -2,17 +2,17 @@ Level1 = Class{__includes = BaseState}
 
 ---------------------------------------------------------------------------------------------------------
 
-function Level1:enter()
+function Level1:enter(playerAttri)
   world = bump.newWorld()
   gameScore = 0
 
-  local newPlayerAttri = { x = GAME_WIDTH/2 - 100, y = GAME_HEIGHT - 200, type = 3 }
+  local newPlayerAttri = playerAttri or { x = GAME_WIDTH/2 - 100, y = GAME_HEIGHT - 200, type = 1, HP = 30 }
   player = Player(newPlayerAttri)
 
-  local newEnemyAttri = { x = GAME_WIDTH/2 - 100, y = 200, HP = 100 }
+  local newEnemyAttri = { x = GAME_WIDTH/2 - 100, y = 200, HP = 1000 }
   enemy1 = Enemy1(newEnemyAttri)
   local newEnemyAttri = { x = GAME_WIDTH/2 + 100, y = 200, HP = 1000 }
-  --enemy2 = Enemy2(newEnemyAttri)
+  enemy2 = Enemy1(newEnemyAttri)
 
   curRoom = Border(300, 50, 1000, 800)
 
@@ -20,7 +20,7 @@ function Level1:enter()
 
   --HUD init
   HUD = {
-    playerHP = {x = 100, y = 10, width = 50, height = 300, barY = 10, barHeight = 300, max = player.HP},
+    playerHP = {x = 100, y = 10, width = 50, height = 300, barY = 10, barHeight = 300, max = playerSet[player.type].maxHP},
     enemyHP = {x = 180, y = 10, width = 50, height = 300, barY = 10, barHeight = 300, max = enemy1.HP},
     score = {x = 1200, y = 10, val = gameScore}
   }
@@ -41,9 +41,9 @@ function Level1:update(dt)
   end
 
   --HUD update
-  HUD.playerHP.barHeight = HUD.playerHP.height*player.HP/HUD.playerHP.max
+  HUD.playerHP.barHeight = HUD.playerHP.height* player.HP /HUD.playerHP.max
   HUD.playerHP.barY = HUD.playerHP.y + HUD.playerHP.height - HUD.playerHP.barHeight
-  HUD.enemyHP.barHeight = HUD.enemyHP.height*enemy1.HP/HUD.enemyHP.max
+  HUD.enemyHP.barHeight = HUD.enemyHP.height* enemy1.HP /HUD.enemyHP.max
   HUD.enemyHP.barY = HUD.enemyHP.y + HUD.enemyHP.height - HUD.enemyHP.barHeight
   HUD.score.val = gameScore
 
@@ -52,7 +52,9 @@ function Level1:update(dt)
   elseif player.HP <= 0 then
     gGameState:change("lose", gameScore)
   elseif enemiesNumber == 0 and inputTable["c"] then
-    gGameState:change("level2")
+    gGameState:change("level2", {HP = player.HP, type = player.type})
+  elseif inputTable["p"] then
+    gGameState:change("level2", {HP = player.HP, type = player.type})
   end
 
 
@@ -63,12 +65,12 @@ end
 function Level1:render()
   love.graphics.setColor(0.1, 0.8, 0.3, 1)
   love.graphics.setFont(love.graphics.newFont(40))
-  love.graphics.print("This is level1")
+  --love.graphics.print("This is level1")
 
   local i = 1
   for key, item in pairs(items) do
     item:render()
-    love.graphics.print(tostring(item), 0, i*50)
+    --love.graphics.print(tostring(item), 0, i*50)
     i = i + 1
   end
 
