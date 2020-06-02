@@ -22,12 +22,9 @@ function Level1:enter(playerAttri)
 
   items = world:getItems()
 
-  -- HUD init
-  HUD = {
-    playerHP = {x = 100, y = 10, width = 50, height = 300, barY = 10, barHeight = 300, max = playerSet[player.type].maxHP},
-    enemyHP = {x = 180, y = 10, width = 50, height = 300, barY = 10, barHeight = 300, max = enemy1.HP},
-    score = {x = 1200, y = 10, val = gameScore}
-  }
+  --HUD init
+  levelHUD = {}
+  HUD.init(levelHUD, player, gameScore)
 
 end
 
@@ -45,12 +42,8 @@ function Level1:update(dt)
     end
   end
 
-  --HUD update
-  HUD.playerHP.barHeight = HUD.playerHP.height* player.HP /HUD.playerHP.max
-  HUD.playerHP.barY = HUD.playerHP.y + HUD.playerHP.height - HUD.playerHP.barHeight
-  HUD.enemyHP.barHeight = HUD.enemyHP.height* enemy1.HP /HUD.enemyHP.max
-  HUD.enemyHP.barY = HUD.enemyHP.y + HUD.enemyHP.height - HUD.enemyHP.barHeight
-  HUD.score.val = gameScore
+  -- HUD update
+  HUD.update(levelHUD, player, gameScore)
 
   if inputTable["r"] then
     gGameState:change("level1")
@@ -68,10 +61,6 @@ end
 ---------------------------------------------------------------------------------------------------------
 
 function Level1:render()
-  love.graphics.setColor(0.1, 0.8, 0.3, 1)
-  love.graphics.setFont(love.graphics.newFont(40))
-  --love.graphics.print("This is level1")
-
   -- render all items
   local i = 1
   for key, item in pairs(items) do
@@ -80,20 +69,8 @@ function Level1:render()
     i = i + 1
   end
 
-  --HUD display
-  love.graphics.setColor(0.8, 0.7, 0.5, 0.7)
-  love.graphics.rectangle("fill", HUD.playerHP.x, HUD.playerHP.barY, HUD.playerHP.width, HUD.playerHP.barHeight)
-  love.graphics.setColor(0.8, 0.9, 0.7, 1)
-  love.graphics.rectangle("line", HUD.playerHP.x, HUD.playerHP.y, HUD.playerHP.width, HUD.playerHP.height)
-
-  love.graphics.setColor(0.2, 0.3, 0.5, 0.7)
-  love.graphics.rectangle("fill", HUD.enemyHP.x, HUD.enemyHP.barY, HUD.enemyHP.width, HUD.enemyHP.barHeight)
-  love.graphics.setColor(0.2, 0.1, 0.3, 1)
-  love.graphics.rectangle("line", HUD.enemyHP.x, HUD.enemyHP.y, HUD.enemyHP.width, HUD.enemyHP.height)
-
-  love.graphics.setColor(0.1, 0.8, 0.3, 1)
-  love.graphics.print("Score: " .. tostring(HUD.score.val), HUD.score.x, HUD.score.y)
-
+  -- HUD display
+  HUD.render(levelHUD)
 
 end
 

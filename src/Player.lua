@@ -1,5 +1,7 @@
 Player = Class{}
 
+local shootingSFX = love.audio.newSource("Audio/shoot.wav", "static")
+
 --define the attributes of each type of player
 playerSet = {
   {
@@ -126,6 +128,9 @@ function Player:update(dt)
   if self.shootTimer <= 0 then
     playerSet[self.type].shoot(self)
     self.shootTimer = playerSet[self.type].CD
+    love.audio.setVolume(0.4)
+    shootingSFX:stop()
+    shootingSFX:play()
   end
 
 
@@ -191,9 +196,6 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 
-
----------------------------------------------------------------------------------------------------------
-
 function Player:changeHealth(val)
   self.HP = self.HP + val
 
@@ -206,6 +208,7 @@ function Player:hitByBullet(val)
     self:changeHealth(val)
     self.invincibleTimer = invincibleTime
   end
+
 end
 
 ---------------------------------------------------------------------------------------------------------

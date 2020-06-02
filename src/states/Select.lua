@@ -1,7 +1,5 @@
 Select = Class{__includes = BaseState}
 
-local lFont = love.graphics.newFont(100)
-local sFont = love.graphics.newFont(40)
 local totalType = #playerSet
 
 ---------------------------------------------------------------------------------------------------------
@@ -59,7 +57,7 @@ function Select:update(dt)
         text = tostring(i),
         x = x,
         y = y,
-        font = sFont,
+        font = mFont,
         color = {1,1,1}
       })
       y = y + 90
@@ -79,6 +77,10 @@ end
 
 function Select:render()
   items = world:getItems()
+
+  love.graphics.setColor(0.1, 0.9, 0.9, 1)
+  love.graphics.line(GAME_WIDTH/2, 0, GAME_WIDTH/2, GAME_HEIGHT)
+
   -- render all items
   for key, item in pairs(items) do
     item:render()
@@ -90,14 +92,11 @@ function Select:render()
     love.graphics.setColor(val.color)
     love.graphics.print(val.text, val.x, val.y)
   end
+
   love.graphics.setFont(lFont)
   love.graphics.setColor(1,1,1)
-  love.graphics.print("Choose your battleship:", GAME_WIDTH/4-200, 100)
-
-
+  love.graphics.print("Choose your battleship:", GAME_WIDTH/4-300, 100)
   playerDemo:render()
-
-  love.graphics.line(GAME_WIDTH/2, 0, GAME_WIDTH/2, GAME_HEIGHT)
 
 end
 

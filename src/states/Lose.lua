@@ -21,10 +21,10 @@ end
 
 function Lose:render()
   love.graphics.setColor(0.5, 0.5, 0.3, 1)
-  love.graphics.setFont(love.graphics.newFont(40))
-  love.graphics.print("You lose", 500, 200)
-  love.graphics.print("Your score: " .. tostring(self.score), 500, 300)
-  love.graphics.print("Press c to continue", 500, 600)
+  love.graphics.setFont(mFont)
+  love.graphics.print("You lose", 400, 200)
+  love.graphics.print("Your score: " .. tostring(self.score), 400, 300)
+  love.graphics.print("Press c to continue", 400, 600)
 
 end
 

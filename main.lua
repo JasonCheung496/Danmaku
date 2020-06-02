@@ -11,6 +11,7 @@ require "src/Enemy3"
 require "src/Enemy4"
 require "src/Bullet"
 require "src/Border"
+require "src/HUD"
 
 require 'lib/StateMachine'
 require 'src/states/BaseState'
@@ -48,8 +49,11 @@ function love.load()
   }
   gGameState:change("menu")
 
-
   inputTable = {}
+
+  sFont = love.graphics.newFont("Font/stocky.ttf", 40)
+  mFont = love.graphics.newFont("Font/stocky.ttf", 60)
+  lFont = love.graphics.newFont("Font/stocky.ttf", 100)
 
 end
 

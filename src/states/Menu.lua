@@ -1,8 +1,5 @@
 Menu = Class{__includes = BaseState}
 
-local lFont = love.graphics.newFont(100)
-local sFont = love.graphics.newFont(40)
-
 ---------------------------------------------------------------------------------------------------------
 
 function Menu:enter()
@@ -11,11 +8,11 @@ function Menu:enter()
   --positions of UI texts
   UI = {
     title = {GAME_WIDTH/2-250, GAME_HEIGHT/2-200},
-    line1 = {GAME_WIDTH/2-200, GAME_HEIGHT/2+100},
-    line2 = {GAME_WIDTH/2-200, GAME_HEIGHT/2+200},
-    selector = {GAME_WIDTH/2-250, GAME_HEIGHT/2+100,
-      GAME_WIDTH/2-250, GAME_HEIGHT/2+140,
-      GAME_WIDTH/2-220, GAME_HEIGHT/2+120},
+    line1 = {GAME_WIDTH/2-300, GAME_HEIGHT/2+100},
+    line2 = {GAME_WIDTH/2-300, GAME_HEIGHT/2+200},
+    selector = {GAME_WIDTH/2-350, GAME_HEIGHT/2+100,
+      GAME_WIDTH/2-350, GAME_HEIGHT/2+140,
+      GAME_WIDTH/2-320, GAME_HEIGHT/2+120},
   }
 
 end
@@ -30,9 +27,9 @@ function Menu:update(dt)
   if inputTable["down"] then
     menuSelector = (menuSelector + 1) % 2
   end
-  UI.selector = {GAME_WIDTH/2-250, GAME_HEIGHT/2+100+100*menuSelector,
-    GAME_WIDTH/2-250, GAME_HEIGHT/2+140+100*menuSelector,
-    GAME_WIDTH/2-220, GAME_HEIGHT/2+120+100*menuSelector}
+  UI.selector = {GAME_WIDTH/2-350, GAME_HEIGHT/2+100 +100*menuSelector,
+      GAME_WIDTH/2-350, GAME_HEIGHT/2+140 +100*menuSelector,
+      GAME_WIDTH/2-320, GAME_HEIGHT/2+120 +100*menuSelector}
 
   --select what menuSelector's value is
   if inputTable["c"] then
@@ -57,7 +54,7 @@ function Menu:render()
 
   --print menu
   love.graphics.setColor(0.7, 0.8, 0.9, 1)
-  love.graphics.setFont(sFont)
+  love.graphics.setFont(mFont)
   love.graphics.print("Start the game", UI.line1[1], UI.line1[2])
   love.graphics.print("Exit", UI.line2[1], UI.line2[2])
 
