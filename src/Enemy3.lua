@@ -19,6 +19,8 @@ function Enemy3:update(dt)
 
   --move in circle
   self.angle = self.angle + 0.05
+  local dx = math.cos(self.angle)*self.speed*dt
+  local dy = math.sin(self.angle)*self.speed*dt
 
   --shoot the bullet
   self.shootTimer = self.shootTimer - dt*60
@@ -28,9 +30,6 @@ function Enemy3:update(dt)
   end
 
   --move the enemy & check collision using bump
-  local dx = math.cos(self.angle)*self.speed*dt
-  local dy = math.sin(self.angle)*self.speed*dt
-
   local enemyFilter = function(item, other)
     if other.__index == BorderRect then return "slide"
     else return "cross"
@@ -61,14 +60,12 @@ end
 ---------------------------------------------------------------------------------------------------------
 
 function Enemy3:shootTheBullet()
-  --[[
   local pi = math.pi
-  local randFact = math.random(-5, 5)/1000
 
-  for i = -2, 2 do
+  for i = -2, 0 do
     local move = function(bullet)
-      bullet.angle = bullet.angle + randFact + 0.01*i
-      bullet.speed = bullet.speed - 10
+      bullet.angle = bullet.angle - 0.01
+      bullet.speed = bullet.speed + 10
     end
 
     local newBulletAttri = {
@@ -78,10 +75,10 @@ function Enemy3:shootTheBullet()
       type = 2,
       specialMove = move,
       angle = i*pi/8 + pi,
-      speed = 300
+      speed = 200
     }
     bullet = Bullet(newBulletAttri)
-  end]]
+  end
 
 end
 

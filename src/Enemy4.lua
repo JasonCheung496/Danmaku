@@ -1,14 +1,14 @@
-Enemy2 = Class{__includes = EnemyBase}
+Enemy4 = Class{__includes = EnemyBase}
 
-local shootCD = 30
+local shootCD = 60
 
 ---------------------------------------------------------------------------------------------------------
 
-function Enemy2:init(newAttri)
+function Enemy4:init(newAttri)
   local attri = newAttri or {}
-
   self:initBase(attri)
-  self.push = 0 --control random movement
+
+  self.swing = 0 -- control straight line movement
 
   self.shootTimer = 1
 
@@ -16,24 +16,15 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 
-function Enemy2:update(dt)
+function Enemy4:update(dt)
   self:updateBase(dt)
 
-  -- 0 <= push <= 1
-  self.push = math.min(1, self.push)
-  self.push = math.max(0, self.push-dt/2)
-
-  --move randomly
-  if self.push == 0 and math.random(1, 100) == 1 then
-    self.push = math.random(70, 100)/100
-    self.angle = math.random(0, 359)/180*math.pi
-    -- if under 1/3 screen, only move upward
-    if curRoom ~= nil and self.y > curRoom.y+curRoom.height/3 then
-      self.angle = math.random(180, 359)/180*math.pi
-    end
-  end
-  local dx = math.cos(self.angle)*self.speed*dt *self.push
-  local dy = math.sin(self.angle)*self.speed*dt *self.push
+  --move in straight line back and forth
+  self.swing = (self.swing + 0.02) % (math.pi*2)
+  local temp = math.pow(math.abs((math.sin(self.swing))), 1/1.2) * sign(math.sin(self.swing))
+  --local temp = math.sin(self.swing)
+  local dx = math.cos(self.angle)*self.speed*dt *temp
+  local dy = math.sin(self.angle)*self.speed*dt *temp
 
   --shoot the bullet
   self.shootTimer = self.shootTimer - dt*60
@@ -43,6 +34,8 @@ function Enemy2:update(dt)
   end
 
   --move the enemy & check collision using bump
+
+
   local enemyFilter = function(item, other)
     if other.__index == BorderRect then return "slide"
     else return "cross"
@@ -64,36 +57,35 @@ end
 
 ---------------------------------------------------------------------------------------------------------
 
-function Enemy2:render()
-  love.graphics.setColor(0.8, 0.5, 0.1, 1)
+function Enemy4:render()
+  love.graphics.setColor(0.9, 0.1, 0.1, 1)
   love.graphics.rectangle("fill", self.x, self.y, self.width, self.height)
 
 end
 
 ---------------------------------------------------------------------------------------------------------
 
-function Enemy2:shootTheBullet()
+function Enemy4:shootTheBullet()
   local pi = math.pi
-  local randFact = math.random(-5, 5)/1000
 
-  local a = 2
-  for i = -a, a do
+  for i = 0, 2 do
     local move = function(bullet)
-      bullet.register[1] = bullet.register[1] and bullet.register[1] + 0.1 or 0
-      bullet.angle = bullet.angle + math.cos(bullet.register[1]) -- + randFact
+      bullet.angle = bullet.angle + 0.01
+      bullet.speed = bullet.speed + 10
     end
+
     local newBulletAttri = {
       x = self.x + self.width/2,
       y = self.y + self.height,
       source = self,
       type = 2,
       specialMove = move,
-      angle = pi*2/(a*2+1)*i,--i*pi/8 + pi,
-      speed = 600
+      angle = i*pi/8 + pi,
+      speed = 200
     }
-
     bullet = Bullet(newBulletAttri)
   end
+
 
 end
 

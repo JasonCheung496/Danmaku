@@ -12,9 +12,11 @@ function Level3:enter(playerAttri)
   newPlayerAttri.x, newPlayerAttri.y = GAME_WIDTH/2 - 100, GAME_HEIGHT - 200
   player = Player(newPlayerAttri)
 
-  -- 2 new enemies of type 3
+  -- new enemies of type 3 & 4
   local newEnemyAttri = { x = GAME_WIDTH/2 - 400, y = 100, HP = 1000 }
   enemy1 = Enemy3(newEnemyAttri)
+  local newEnemyAttri = { x = GAME_WIDTH/2, y = 100, HP = 1000 }
+  enemy2 = Enemy4(newEnemyAttri)
 
   curRoom = Border(10, 10, GAME_WIDTH-20, GAME_HEIGHT-20)
 

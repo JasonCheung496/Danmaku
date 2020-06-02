@@ -7,6 +7,7 @@ require "src/EnemyBase"
 require "src/Enemy1"
 require "src/Enemy2"
 require "src/Enemy3"
+require "src/Enemy4"
 require "src/Bullet"
 require "src/Border"
 
@@ -79,6 +80,18 @@ end
 
 function love.keypressed(key, scancode, isrepeat)
   inputTable[key] = true
+end
+
+---------------------------------------------------------------------------------------------------------
+
+function sign(n)
+  if n > 0 then
+    return 1
+  elseif n == 0 then
+    return 0
+  else
+    return -1
+  end
 end
 
 ---------------------------------------------------------------------------------------------------------

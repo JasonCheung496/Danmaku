@@ -91,7 +91,9 @@ function Bullet:update(dt)
   (self.y < -100 and self.angle >= -pi/2 and self.angle <= pi/2) or --up side
   (self.y > GAME_HEIGHT + 100 and (self.angle <= -pi/2 or self.angle >= pi/2)) or -- down side
   self.lifetime <= 0 then -- lifetime <= 0
-    world:remove(self)
+    if world:hasItem(self) then
+      world:remove(self)
+    end
   end
   self.lifetime = self.lifetime - 1
 

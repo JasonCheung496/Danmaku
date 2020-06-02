@@ -32,6 +32,8 @@ function Enemy1:update(dt)
       self.angle = math.random(180, 359)/180*math.pi
     end
   end
+  local dx = math.cos(self.angle)*self.speed*dt *self.push
+  local dy = math.sin(self.angle)*self.speed*dt *self.push
 
   --shoot the bullet
   self.shootTimer = self.shootTimer - dt*60
@@ -41,9 +43,6 @@ function Enemy1:update(dt)
   end
 
   --move the enemy & check collision using bump
-  local dx = math.cos(self.angle)*self.speed*self.push*dt
-  local dy = math.sin(self.angle)*self.speed*self.push*dt
-
   local enemyFilter = function(item, other)
     if other.__index == BorderRect then return "slide"
     else return "cross"
