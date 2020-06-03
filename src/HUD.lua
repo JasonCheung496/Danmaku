@@ -14,13 +14,20 @@ function HUD.init(hud, player, score)
   hud.HPBlock.curHeight = hud.HPBlock.maxHeight * hud.HPBlock.curHP / hud.HPBlock.maxHP
   hud.HPBlock.deltaColor = 2/math.floor((hud.HPFrame.height - border)/(border + hud.HPBlock.height))
 
+  hud.progress = {show = false, x = 450, y = 200}
+
 end
 
-function HUD.update(hud, player, score)
+function HUD.update(hud, player, score, numOfEnemies)
   -- HUD update
   hud.HPBlock.curHP = player.HP
   hud.HPBlock.curHeight = hud.HPBlock.maxHeight * hud.HPBlock.curHP / hud.HPBlock.maxHP
   hud.score.val = gameScore
+  if numOfEnemies > 0 then
+    hud.progress.show = false
+  elseif numOfEnemies <= 0 then
+    hud.progress.show = true
+  end
 
 end
 
@@ -51,4 +58,12 @@ function HUD.render(hud)
   love.graphics.setFont(sFont)
   love.graphics.print("Score: ", hud.score.x, hud.score.y)
   love.graphics.print(tostring(hud.score.val), hud.score.x, hud.score.y + 50)
+
+  -- progress
+  if hud.progress.show then
+    love.graphics.setColor(0.1, 0.8, 0.3, 1)
+    love.graphics.setFont(mFont)
+    love.graphics.print("Press c to continue...", hud.progress.x, hud.progress.y)
+  end
+
 end

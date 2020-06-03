@@ -43,7 +43,7 @@ function Level2:update(dt)
   end
 
   -- HUD update
-  HUD.update(levelHUD, player, gameScore)
+  HUD.update(levelHUD, player, gameScore, enemiesNumber)
 
   if inputTable["r"] then
     gGameState:change("level2")
